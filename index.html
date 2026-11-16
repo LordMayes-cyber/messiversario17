@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#120d0e">
+  <title>17 meses · Abril 2027</title>
+  <style>
+    :root{--black:#120d0e;--velvet:#8e1b25;--velvet-dark:#5a0f16;--gold:#e6c278;--cream:#f7efe0;--muted:#b8a99a;
+      --serif:Georgia,"Times New Roman",serif;--sans:"Segoe UI",system-ui,Arial,sans-serif}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}
+    body{margin:0;background:var(--black);color:var(--cream);font:17px/1.6 var(--sans);overflow-x:hidden}
+    img{display:block;max-width:100%}button{font:inherit}
+    :focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+
+    /* Sala con telón */
+    .theater{position:relative;min-height:100vh;display:grid;place-items:center;overflow:hidden;padding:60px 16px;
+      background:radial-gradient(ellipse at 50% 40%,#3a2a20 0%,var(--black) 70%)}
+    .screen{text-align:center;max-width:720px}
+    .marquee{display:inline-block;padding:10px 24px;border:2px solid var(--gold);border-radius:6px;color:var(--gold);font:800 12px var(--sans);letter-spacing:.35em;text-transform:uppercase;
+      box-shadow:0 0 0 6px var(--black),0 0 0 8px #e6c27866,0 0 30px #e6c27844}
+    .screen h1{margin:26px 0 8px;font:400 clamp(44px,8vw,86px)/1 var(--serif);text-shadow:0 0 40px #e6c27855}
+    .screen .tag{margin:0 0 30px;color:var(--muted);font:italic 19px var(--serif)}
+    .stars{color:var(--gold);letter-spacing:.3em;margin-bottom:24px}
+    .curtain{position:absolute;top:0;bottom:0;width:51%;z-index:5;transition:transform 2.2s cubic-bezier(.7,0,.3,1);
+      background:repeating-linear-gradient(90deg,var(--velvet-dark) 0 6px,var(--velvet) 18px,#b0303c 26px,var(--velvet) 34px,var(--velvet-dark) 46px);box-shadow:inset 0 -40px 60px #0008}
+    .curtain.l{left:0}.curtain.r{right:0}
+    .valance{position:absolute;top:0;left:0;right:0;height:70px;z-index:6;background:repeating-radial-gradient(circle at 50% -10px,#a3222e 0 34px,var(--velvet-dark) 35px 40px);background-size:80px 70px;box-shadow:0 10px 20px #0009}
+    body.open .curtain.l{transform:translateX(-96%)}
+    body.open .curtain.r{transform:translateX(96%)}
+    .ticket{position:absolute;z-index:7;left:50%;top:55%;transform:translate(-50%,-50%);display:flex;border:0;padding:0;cursor:pointer;filter:drop-shadow(0 18px 30px #000a);transition:opacity .6s,transform .6s;background:none;color:var(--black)}
+    .ticket span{display:block;padding:20px 22px;background:var(--gold);text-align:left}
+    .ticket .main{border-radius:10px 0 0 10px;border-right:2px dashed #8a6a2a}
+    .ticket .main small{display:block;font:800 10px var(--sans);letter-spacing:.25em;text-transform:uppercase}
+    .ticket .main b{display:block;font:400 26px/1.1 var(--serif)}
+    .ticket .stub{border-radius:0 10px 10px 0;display:grid;place-items:center;font:800 13px var(--sans);letter-spacing:.1em;writing-mode:vertical-rl}
+    .ticket:hover{transform:translate(-50%,-50%) rotate(-2deg) scale(1.03)}
+    body.open .ticket{opacity:0;pointer-events:none;transform:translate(-50%,-30%) rotate(-10deg)}
+
+    section{padding:80px 0}
+    .title{text-align:center;max-width:620px;margin:0 auto 34px;padding:0 16px}
+    .title small{color:var(--gold);font:800 11px var(--sans);letter-spacing:.3em;text-transform:uppercase}
+    .title h2{margin:10px 0;font:400 clamp(32px,5vw,48px)/1.1 var(--serif)}
+    .title p{margin:0;color:var(--muted)}
+
+    /* Tira de película */
+    .film{position:relative;padding:26px 0;background:#050404;border-block:2px solid #222}
+    .film::before,.film::after{content:"";position:absolute;left:0;right:0;height:14px;background:repeating-linear-gradient(90deg,transparent 0 10px,#e9e1d0 10px 22px,transparent 22px 34px);opacity:.85}
+    .film::before{top:6px}.film::after{bottom:6px}
+    .reel{display:flex;gap:14px;width:max-content;animation:roll 40s linear infinite}
+    .film:hover .reel,.film:focus-within .reel{animation-play-state:paused}
+    .frame{flex:none;width:clamp(200px,26vw,300px);aspect-ratio:4/3;margin:0;border:3px solid #1d1a18;cursor:zoom-in;overflow:hidden;position:relative}
+    .frame img{width:100%;height:100%;object-fit:cover;filter:sepia(.25) contrast(1.05);transition:filter .4s,transform .4s}
+    .frame:hover img{filter:none;transform:scale(1.05)}
+    .frame figcaption{position:absolute;left:8px;bottom:6px;font:700 11px var(--sans);letter-spacing:.15em;color:#fff;text-shadow:0 1px 3px #000}
+    @keyframes roll{to{transform:translateX(-50%)}}
+
+    .viewer{border:0;padding:0;background:transparent;max-width:92vw}
+    .viewer::backdrop{background:#000e}
+    .viewer img{max-height:82vh;width:auto;margin:auto;border:2px solid var(--gold)}
+    .viewer button{display:block;margin:14px auto 0;border:1px solid var(--gold);border-radius:999px;padding:10px 20px;background:transparent;color:var(--gold);cursor:pointer;font-weight:700}
+
+    /* Créditos */
+    .credits-wrap{position:relative;width:min(680px,92vw);margin:0 auto}
+    .credits{text-align:center}
+    .credits .role{margin:0;color:var(--muted);font:800 11px var(--sans);letter-spacing:.3em;text-transform:uppercase}
+    .credits .name{margin:4px 0 26px;font:400 26px var(--serif);color:var(--gold)}
+    .credits .letter{margin:40px 0;text-align:left;padding:clamp(26px,5vw,44px);border:1px solid #e6c27855;border-radius:6px;background:#1a1314}
+    .credits .letter h3{margin:0 0 20px;text-align:center;font:400 clamp(28px,4.5vw,38px) var(--serif)}
+    .credits .letter p{margin:0 0 16px;font:18px/1.85 var(--serif);color:var(--cream)}
+    .sign{text-align:right;color:var(--gold);font:italic 22px var(--serif)!important}
+    .fin{margin:30px 0 0;font:400 clamp(40px,7vw,64px) var(--serif);letter-spacing:.2em;color:var(--cream)}
+    .play{display:block;margin:0 auto 30px;border:0;border-radius:999px;padding:12px 24px;background:var(--gold);color:var(--black);font-weight:800;cursor:pointer}
+    body.rolling .credits{animation:credits 26s linear both}
+    @keyframes credits{from{transform:translateY(60vh);opacity:0}6%{opacity:1}to{transform:none}}
+    footer{padding:30px 16px 44px;text-align:center;color:var(--muted);font-size:13px}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important}html{scroll-behavior:auto}.reel{flex-wrap:wrap;width:auto;justify-content:center}}
+  </style>
+</head>
+<body>
+  <header class="theater">
+    <div class="valance" aria-hidden="true"></div>
+    <div class="curtain l" aria-hidden="true"></div><div class="curtain r" aria-hidden="true"></div>
+    <button class="ticket" type="button" id="entrada" aria-label="Usar la entrada y abrir el telón">
+      <span class="main"><small>Admite 1 · Fila del amor</small><b>Nosotros<br>17 meses</b></span><span class="stub">ENTRAR</span>
+    </button>
+    <div class="screen">
+      <span class="marquee">Estreno · Abril 2027</span>
+      <h1>Nosotros</h1>
+      <div class="stars" aria-label="Cinco estrellas">★★★★★</div>
+      <p class="tag">“La historia de amor más bonita del año”. Con usted como protagonista.</p>
+      <a class="play" href="#escenas" style="display:inline-block;text-decoration:none">Ver la película ↓</a>
+    </div>
+  </header>
+
+  <main>
+    <section id="escenas">
+      <div class="title"><small>Escenas favoritas</small><h2>Diecisiete meses en pantalla</h2><p>Pase el dedo o el ratón para pausar la cinta. Toque una escena para verla en grande.</p></div>
+      <div class="film"><div class="reel" id="reel"></div></div>
+    </section>
+
+    <section id="creditos">
+      <div class="title"><small>Créditos finales</small><h2>Antes de que se prendan las luces</h2></div>
+      <button class="play" type="button" id="rodar">▶ Pasar los créditos</button>
+      <div class="credits-wrap">
+        <div class="credits">
+          <p class="role">Protagonista</p><p class="name">Mi reina</p>
+          <p class="role">Coprotagonista</p><p class="name">Su novio, perdidamente enamorado</p>
+          <p class="role">Dirección y guion</p><p class="name">El destino</p>
+          <p class="role">Banda sonora</p><p class="name">Su risa</p>
+          <p class="role">Locaciones</p><p class="name">Todos los lugares donde estuvimos juntos</p>
+          <article class="letter">
+            <h3>Una carta para la protagonista</h3>
+            <p>Diecisiete meses, y si nuestra historia fuera una película, sería mi favorita. No por las escenas grandes, sino por las pequeñas: un abrazo largo, una comida juntos, una mirada que lo dice todo.</p>
+            <p>Gracias por compartir conmigo cada escena, las alegres y también las difíciles. Con usted hasta los días normales parecen dignos de guardarse en cámara lenta.</p>
+            <p>No sé cuántas temporadas vamos a tener, pero yo quiero estar en todas. Quiero seguir escribiendo este guion con usted, sin prisa y con mucho amor.</p>
+            <p>Feliz mesiversario, mi vida. La amo con todo mi corazón.</p>
+            <p class="sign">Con amor, su coprotagonista ♥</p>
+          </article>
+          <p class="fin">FIN</p>
+          <p class="role" style="margin-top:10px">…o mejor dicho, continuará</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>Hecho especialmente para usted · Abril 2027</footer>
+  <dialog class="viewer" id="visor"><img id="vimg" src="" alt=""><button type="button" id="cerrar">Cerrar</button></dialog>
+
+  <script>
+    const reel=document.getElementById('reel'),visor=document.getElementById('visor'),vimg=document.getElementById('vimg');
+    const calma=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const vueltas=calma?1:2;
+    for(let v=0;v<vueltas;v++)for(let i=1;i<=8;i++){
+      const f=document.createElement('figure');f.className='frame';
+      if(v===0){f.tabIndex=0;f.setAttribute('role','button')}else f.setAttribute('aria-hidden','true');
+      f.innerHTML=`<img src="img/${i}.jpeg" alt="${v?'':'Escena '+i+' de nuestra historia'}" loading="lazy"><figcaption>ESCENA ${String(i).padStart(2,'0')}</figcaption>`;
+      const open=()=>{vimg.src=`img/${i}.jpeg`;vimg.alt=`Escena ${i} de nuestra historia`;visor.showModal()};
+      f.onclick=open;f.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}};reel.appendChild(f);
+    }
+    document.getElementById('cerrar').onclick=()=>visor.close();visor.onclick=e=>{if(e.target===visor)visor.close()};
+    document.getElementById('entrada').onclick=()=>document.body.classList.add('open');
+    document.getElementById('rodar').onclick=function(){document.body.classList.remove('rolling');void document.body.offsetWidth;
+      document.body.classList.add('rolling');document.getElementById('creditos').scrollIntoView({behavior:calma?'auto':'smooth'});this.textContent='↺ Pasarlos otra vez'};
+  </script>
+</body>
+</html>
